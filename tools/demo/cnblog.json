@@ -5,5 +5,10 @@
     "user_id" : "2039866",
     "username": "brt2",
     "password": "this is a secret...",
-    "repo_dir": "abspath to your NoteGitRepo-dir"
+    "blog_dir": {
+        "Windows": "D:\\Home\\workspace\\note\\programming",
+        "Linux"  : "~/workspace/note/programming"
+    },
+    "cache"   : ".uploading.json",
+    "db_file" : ".blogs.db"
 }

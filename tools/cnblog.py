@@ -49,8 +49,7 @@ class CnblogManager:
         self.mime = None
 
         self.md = MarkdownParser()
-        self.db = ArticlesDB(os.path.join(self.get_blogdir(),
-                                          self.dict_conf.get("db_file")))
+        self.db = ArticlesDB(os.path.join(self.get_blogdir(), self.get_dbpath()))
         # self.md.set_ignore_websites(["cnblogs.com/blog/" + self.dict_conf["user_id"]])
 
     def check_repo(self):
@@ -67,6 +66,9 @@ class CnblogManager:
 
     def get_cachapath(self):
         return self.dict_conf.get("cache")
+
+    def get_dbpath(self):
+        return self.dict_conf.get("db_file")
 
     def get_abspath(self, path_rel):
         return os.path.join(self.dir_blog, path_rel)

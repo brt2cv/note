@@ -28,6 +28,7 @@ class NoteRepoMgr:
         dir_blog = cnblog.get_blogdir()
         self.path_cache = os.path.join(dir_blog,
                                        cnblog.get_cachapath())
+        self.path_db = os.path.join(dir_blog, cnblog.get_dbpath())
         self.git = GitRepo(dir_blog)
 
 
@@ -57,10 +58,13 @@ class NoteRepoMgr:
         for pfrom, pto in mov_:
             self.cnblog_mgr.move_blog(pfrom, pto)
 
-        with open([[]]*4, "w") as fp:
-            json.dump(update_files, fp, ensure_ascii=False, indent=2)
+        with open(self.path_cache, "w") as fp:
+            json.dump([[]]*4, fp, ensure_ascii=False, indent=2)
         # 添加git add .cnblog.db
 
+        self.git.add([self.path_cache, self.path_db])
+        commit_message = "上传cnblogs"
+        self.git.commit(commit_message)
 
 
     def load_cache(self):
