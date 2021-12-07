@@ -1,0 +1,75 @@
+{
+    "root": {
+        "data": {
+            "text": "Node.js"
+        },
+        "children": [
+            {
+                "data": {
+                    "text": "Js语法"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "text": "JSON.stringify()",
+                            "hyperlink": "https://blog.csdn.net/weixin_31477659/article/details/112643636",
+                            "hyperlinkTitle": ""
+                        }
+                    },
+                    {
+                        "data": {
+                            "text": "forEach"
+                        }
+                    },
+                    {
+                        "data": {
+                            "text": "if (Array.includes()) {...}"
+                        }
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "text": "npm常用命令",
+                    "hyperlink": "https://blog.csdn.net/u011341352/article/details/108093629",
+                    "hyperlinkTitle": "",
+                    "expandState": "expand"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "text": "npm install 原理",
+                            "hyperlink": "https://mp.weixin.qq.com/s/5tmND0G_ZkYVR7Dmug0ugQ",
+                            "hyperlinkTitle": ""
+                        }
+                    },
+                    {
+                        "data": {
+                            "text": "npx"
+                        }
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "text": "web框架"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "text": "express"
+                        }
+                    },
+                    {
+                        "data": {
+                            "text": "koa2"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
