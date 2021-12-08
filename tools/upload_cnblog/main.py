@@ -41,6 +41,7 @@ class NoteRepoMgr:
         self.git.add(self.path_cache)
 
         # git commit, 若无需提交，则Ctrl+C终止程序即可
+        # commit_message = "更新programming"
         commit_message = input("Input commit message [回车默认提交]: ")
         self.git.commit(commit_message)
 
@@ -157,7 +158,8 @@ if __name__ == "__main__":
     args = getopt()
 
     from cnblog import CnblogManager
-    path_cnblog_account = ".cnblog.json"
+    path_curr = os.path.abspath(__file__)
+    path_cnblog_account = os.path.join(os.path.dirname(path_curr), ".cnblog.json")
     cnblog = CnblogManager(path_cnblog_account)
     mgr = NoteRepoMgr(cnblog)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# @Date    : 2021-12-03
+# @Date    : 2021-11-22
 # @Author  : Bright Li (brt2@qq.com)
 # @Link    : https://gitee.com/brt2
 # @Version : 0.1.3
@@ -83,6 +83,10 @@ class MarkdownParser:
     def insert_text(self, index, content):
         self.check_lock()
         self.__text_lines.insert(index, self._set_line(content))
+
+    def append_text(self, content):
+        self.check_lock()
+        self.__text_lines.append(self._set_line(content))
 
     def pop_text(self, index):
         self.check_lock()
@@ -189,7 +193,7 @@ class MarkdownParser:
             url_new = callback(url_img)
             if url_new:
                 num_space = self.get_text()[line_idx].find("!")
-                self.modify_text(line_idx, " "*num_space + f"![]({url_new})")
+                self.modify_text(line_idx, " "*num_space + "![]({})" % url_new)
 
     def make_title(self):
         blog_title = self.metadata["description"]  # 起一个吸引人的标题
