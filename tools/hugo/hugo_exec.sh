@@ -26,6 +26,7 @@ if [ ! -d $hugo_dir ]; then
     elif [ $themes == "eureka" ]; then
         # 不同主题操作可能不同
         git clone --depth=1 -b v0.8.4 https://github.com/wangchucheng/hugo-eureka.git ${hugo_dir}/themes/eureka
+        # git clone --depth=1 -b v0.8.4 https://gitee.com/wangchucheng/hugo-eureka.git ${hugo_dir}/themes/eureka
         echo "已经下载主题【eureka】，请前往【${hugo_dir}】目录手动修改配置，详情参考：https://www.wangchucheng.com/en/docs/hugo-eureka/getting-started/"
         # 启动程序: cd ${hugo_dir} && mv themes/eureka/exampleSite/* . && hugo server
         exit
