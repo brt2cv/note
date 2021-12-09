@@ -1,0 +1,14 @@
+baseURL: http://brt2.gitee.io/blog
+# languageCode: zh-Hans
+themesDir: site/themes
+theme: curr
+title: Bright's Blogs
+contentDir: ../../programming
+publishDir:  site/publish
+# buildDrafts: false
+# pluralizeListTitles: false
+params:
+  AuthorName: Bright Li
+  # GitHubUser: brt2
+  # SidebarRecentLimit: 5
+  Subtitle: 摧枯拉朽的干翻这个世界
