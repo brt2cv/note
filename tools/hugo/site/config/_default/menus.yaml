@@ -2,9 +2,9 @@ main:
   - name: About
     url: '#about'
     weight: 5
-  - name: Thinks
-    url: /posts/
+  - name: Articles
+    url: /articles/
     weight: 2
   - name: Programming
-    url: /docs/
+    url: /programming/
     weight: 3
