@@ -1,0 +1,10 @@
+main:
+  - name: About
+    url: '#about'
+    weight: 5
+  - name: Articles
+    url: /articles/
+    weight: 2
+  - name: Programming
+    url: /programming/
+    weight: 3
