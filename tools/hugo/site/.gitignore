@@ -1,3 +1,5 @@
 .hugo_build.lock
 resources/
 content/programming
+# git clone https://github.com/brt2cv/brt2cv.github.io.git public
+public/
