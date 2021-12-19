@@ -1,6 +1,6 @@
 <!--
 +++
-title       = "Golang语法"
+title       = "【入门】Golang语法"
 description = "1. 10min语法速学; 2. 常用命令; 3. Go Modules & goproxy.cn; 4. 进阶; 5. 标准库; 6. 第三方库"
 date        = "2021-12-19"
 tags        = []
@@ -24,6 +24,149 @@ draft       = false
 + [直接看点示例代码吧，学习+实践](https://gobyexample-cn.github.io/)
 
 不想粘贴教程，但初学真的记不住，来回查找还不如先集中在一起。熟练了再删掉……
+
+### Struct
+
+定义属性，可以同时定义多个：
+
+```py
+type Rectangle struct {
+    length, width int
+    area float64
+}
+```
+
+可自动转换为指针：
+
+```go
+pr := new (Rectangle) //get pointer to an instance with new keyword
+(*pr).width = 6 //set value using . notation by dereferencing pointer.
+pr.length = 8 //set value using . notation - same as previous.  There is no -> operator like in c++. Go automatically converts
+
+r2 := Rectangle{width:3, name:"my_r2", length:4}
+```
+
+许多面向对象语言，类方法都有一个 `this` 或者 `self` 隐式的只想当前的实例，但在 Go 中，并不存这样的概念。当定义方法是，都会给定一个变量名，如上面的例子中是:
+
+```go
+func (r Rectangle) Area() int {
+    return r.length * r.width
+}
+```
+
+上面代码中，调用 Area 方法时，Rectangle 实例通过值传递。当然，也可以通过引用传递。对于方法而言，使用引用和值并没有太大的区别。Go 本身会自动识别，并且完成转换。
+
+#### 返回值命名 & 通过多个返回值处理错误
+
+自动根据返回值名称，返回数据：
+
+```go
+package main
+
+import (
+    "fmt"
+    "errors"
+    "math"
+)
+
+//name the return variables - by default it will have 'zero-ed' values i.e. numbers are 0, string is empty, etc.
+func MySqrt2(f float64) (ret float64, err error) {
+    if (f < 0) {
+        //then you can use those variables in code
+        ret = float64(math.NaN())
+        err = errors.New("I won't be able to do a sqrt of negative number!")
+    } else {
+        ret = math.Sqrt(f)
+        //err is not assigned, so it gets default value nil
+    }
+    //automatically return the named return variables ret and err
+    return
+}
+
+func main() {
+    fmt.Println(MySqrt2(5))
+}
+```
+
+#### 支持多继承
+
+```go
+// multiple inheritance
+type CameraPhone struct {
+    Camera //has anonymous camera
+    Phone //has anonymous phone
+}
+```
+
+### 接口
+
+```go
+//Shaper is an interface and has a single function Area that returns an int.
+type Shaper interface {
+   Area() int
+}
+
+type Rectangle struct {
+   length, width int
+}
+
+//this function Area works on the type Rectangle and has the same function signature defined in the interface Shaper.  Therefore, Rectangle now implements the interface Shaper.
+func (r Rectangle) Area() int {
+   return r.length * r.width
+}
+
+func main() {
+   r := Rectangle{length:5, width:3}
+   fmt.Println("Rectangle r details are: ", r)
+   fmt.Println("Rectangle r's area is: ", r.Area())
+
+   s := Shaper(r)
+   fmt.Println("Area of the Shape r is: ", s.Area())
+}
+```
+
+在 C++ 或者 Java 中继承接口时，需要明确的声明这一关系，例如上面的代码，用 Java 来写的话，可能为如下的语句
+
+```java
+public class Rectangle implements Shaper { //implementation here }
+```
+
+<font color=#FF0000>在 Go 中，无需表现出这层关系。</font>上面代码中，接口 Shaper 定义一个方法 `Area() int` 。而Rectangle也定义了一个相同的方法 `func (r Rectangle) Area() int` 。所以， Go 会认为Rectangle实现了Shaper的接口。所以，我们可以定义Rectangle为Shaper类型： `r := Shaper(r)` ，之后调用Area()方法，输出Rectangle的面积。
+
+让我们继续添加 Square，来看一看如何通过接口统一的访问每种类型的面积……
+
+```go
+func main() {
+   r := Rectangle{length:5, width:3}
+   q := Square{side:5}
+   shapesArr := [...]Shaper{r, q}
+
+   fmt.Println("Looping through shapes for area ...")
+   for n, _ := range shapesArr {
+       fmt.Println("Shape details: ", shapesArr[n])
+       fmt.Println("Area of this shape is: ", shapesArr[n].Area())
+   }
+}
+```
+
+对比 Java 实现接口，必须通过 `implements` 关键字，描述类之间的关系，在 C# 中则需要使用 `:` 代替 `implements` 。这种情况下，如果类之间的关系更新了，不得不修改这些核心的模块。
+
+大多数项目，都有一个长期的架构和设计时期，在这期间需要不断的更新接口和数据结构，直到所有的因素都考虑到，然而这就需要不断的更新核心代码。一旦设计结构最终定好之后，如果没有太大的改动理由，是不会去更改类之间的层次结构的。在我工作过的项目中，架构是由专业的架构师负责，如果不是评审委员会同意架构是不会产生变化的。上游模块的改动往往导致下游模块也跟着一起改动。另一种方案，是重新封装现有的类，生成新的接口，但这往往又会造成系统庞大，难以管理。为了解决复杂性和模块的变化，设计模式应运而生。我承认，我非常喜欢设计模式和面向对象的编程过程。但是，设计模式很多，需要我们必须有很好的专业知识，也需要一个很长的学习过程。与其花费更多的设计时间，Go 可否能提供更直观简单的方式呢？
+
+Golang可以动态的给一个现有的类，实现新的接口，更加灵活。
+
+```go
+//new requirement that the Bus must be compatible with
+type PersonalSpaceLaw interface {
+    IsCompliantWithLaw() bool
+}
+
+func (b Bus) IsCompliantWithLaw() bool {
+    return (b.l * b.b * b.h) / (b.rows * b.seatsPerRow) >= 3
+}
+```
+
+看到没，之前的代码一点没改，就完成了结构的扩展。是不是更加干净、灵活，对新需求更加容易扩展。
 
 ### 1.1. 错误机制
 
@@ -60,7 +203,26 @@ finished
 
 在 defer 的处理逻辑中，使用 recover 使程序恢复正常，并且将返回值设置为 -1，在这里也可以不处理返回值，如果不处理返回值，返回值将被置为默认值 0。
 
----
+#### defer语句
+
+在下面的代码中，假设要执行一系列的数据库操作：打开数据库连接，执行操作。之后假设，数据库操作出现异常，程序会立即返回。如果什么也不做，数据库连接将会一直持续，如果使用 defer 语句，可以保证在程序返回之前，数据库连接被正确的关闭。
+
+```go
+func doDBOperations() {
+     connectToDB()
+     fmt.Println("Defering the database disconnect.")
+     defer disconnectFromDB() //function called here with defer
+     fmt.Println("Doing some DB operations ...")
+     fmt.Println("Oops! some crash or network error ...")
+     fmt.Println("Returning from function here!")
+     return //terminate the program
+     // deferred function executed here just before actually returning, even if there is a return or abnormal termination before
+}
+```
+
+多个 defer 语句的执行顺序：可以声明多个 defer 语句。当声明多个是，**满足后进先出（last in first out-LIFO)的执行顺序，就相当于一个栈一样**。
+
+#### panic
 
 panic 的一种常见用法是：当函数返回我们不知道如何处理（或不想处理）的错误值时，中止操作。 如果创建新文件时遇到意外错误该如何处理？这里有一个很好的 panic 示例。
 
@@ -113,24 +275,27 @@ Exception有如下特性:
 
 ## 3. Go Modules & goproxy.cn
 
-### 3.1. goproxy.cn
+Go Modules 是 Go 1.11 推出的功能模块，前身是 vgo，成长于 Go 1.12，丰富于 Go 1.13 是 Go 更好的一种模块依赖管理解决方案实现。
 
-从 Go 1.11 版本开始，Go 提供了 Go Modules 的机制，推荐设置以下环境变量，第三方包的下载将通过国内镜像，避免出现官方网址被屏蔽的问题。
+而 Go Module Proxy 是随着 Go Modules 一起产生的模块代理协议，通过这个协议，我们可以实现 Go 模块代理，通过镜像网站下载相关依赖模块。
+
+proxy.golang.org 为 Go 官方模块代理网站，不翻墙中国用户是无法访问的，而 goproxy.cn （官方推荐是使用 Go1.13 或以上版本）是七牛云推出的非盈利性 Go 模块代理网站，为中国和世界上其他地方的 Gopher 们提供一个免费的、可靠的、持续在线的且经过 CDN 加速的模块代理，添加这个代理很简单：
 
 ```sh
+# 开启 GO Modules 包管理方式
+$ go env -w GO111MODULE=on
+# 设置代理为 https://goproxy.cn
+# 你也可以设置多个代理，通过逗号分隔开，模块从左至右设置的代理中查找获取
 $ go env -w GOPROXY=https://goproxy.cn,direct
-```
-
-或在 `~/.profile` 中设置环境变量
-
-```sh
-export GOPROXY=https://goproxy.cn
 ```
 
 ### 3.2. "module" != "package"
 
 有一点需要纠正，就是“模块”和“包”，也就是 “module” 和 “package” 这两个术语并不是等价的，是 “集合” 跟 “元素” 的关系，“模块” 包含 “包”，“包” 属于 “模块”，一个 “模块” 是零个、一个或多个 “包” 的集合。
 
+#### 语义化版本控制规范
+
+Go Modules 默认认为，只要你的主版本号不变，那这个模块版本肯定就不包含重大变更，则我们 import 的时候 path 不会受到影响，比如 v1.0.0 和 v2.0.0，就是一个重大版本变更，在编写代码 import 模块的时候，v1版本的包名是 `github.com/xx/xx` ，v2版本的包名就是 `github.com/xx/xx/v2` 了，<font color=#FF0000>在我们使用go get的时候也需要带上完整的版本路径才能导入指定的版本</font>。
 
 ## 4. 进阶
 > [大道至简—GO语言最佳实践](https://mp.weixin.qq.com/s/hE7ecSywWY8SxoQV0OwBQg)

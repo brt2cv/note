@@ -1,6 +1,14 @@
 [
+  [
+    "3-syntax/37-golang/learn_start.md", 
+    "7-理论知识/71-机器学习/optim-SDG-Batch_size.md"
+  ], 
   [], 
-  [], 
-  [], 
+  [
+    "1-os管理/10-commands/git-proxy.md", 
+    "3-syntax/37-golang/Go1.17新特性.md", 
+    "3-syntax/37-golang/protobuf语法.md", 
+    "5-框架应用/59-micro/Go_Micro.md"
+  ], 
   []
 ]
