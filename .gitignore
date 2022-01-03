@@ -1,5 +1,9 @@
 /.vscode/
 desktop.ini
+*.jpg
+*.png
+*.jpeg
+*.gif
 
 build/
 tmp/
