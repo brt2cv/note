@@ -1,3 +1,6 @@
 [submodule "tools/cnblog"]
 	path = tools/cnblog
 	url = https://github.com/brt2cv/note2cnblog.git
+[submodule "mindmap"]
+	path = mindmap
+	url = https://github.com/brt2cv/notemap.git
