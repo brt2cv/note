@@ -1,4 +1,9 @@
 #!/bin/bash
+# @Date    : 2022-01-04
+# @Author  : Bright (brt2@qq.com)
+# @Link    : https://gitee.com/brt2
+# @Version : v0.1.1
+
 # submodule is link, subtree is copy
 
 test -z $1 && action="pull" || action=$1  # echo "Error: 请显式定义操作!" && exit
@@ -56,7 +61,7 @@ url_repo=$2
 branch=$3
 
     if [ -d $dir_module ]; then
-        cd $dir_module && git checkout $branch && git pull && cd ..
+        cd $dir_module && git checkout $branch && git pull && cd -
         # git submodule foreach git pull
             echo ">> 子模块已更新，请在主仓库commit子模块引用信息"
     else
@@ -65,7 +70,7 @@ branch=$3
             # git subtree add --prefix=$dir_module $url_repo $branch --squash
             git submodule add $url_repo $dir_module
             echo ">> 请手动切换子模块分支: " $dir_module
-            cd $dir_module && git checkout $branch && cd ..
+            cd $dir_module && git checkout $branch && cd -
             echo ">> 然后在主仓库commit子模块引用信息"
         fi
     fi
@@ -87,13 +92,15 @@ branch=$3
 # m_etc="git@gitee.com:brt2/etc.git"
 # m_pystr="https://github.com/brt2cv/pystring.git"
 m_cnblog="https://github.com/brt2cv/note2cnblog.git"
+m_mindmap="https://github.com/brt2cv/notemap.git"
 
 if [ $action == "push" ]; then
     # 子模块
     # subtree_push data $m_cnblog master
 
     # submodule
-    submodule_push cnblog $m_cnblog master
+    submodule_push tools/cnblog $m_cnblog master
+    submodule_push mindmap $m_mindmap master
 
     # 子项目
     # echo "如需推送，请直接到子仓库中执行 `git push`"
@@ -103,7 +110,8 @@ elif [ $action == "pull" ]; then
     # subtree_pull data $m_cnblog master
 
     # submodule
-    submodule_pull cnblog $m_cnblog master
+    submodule_pull tools/cnblog $m_cnblog master
+    submodule_pull mindmap $m_mindmap master
 
     # 子项目
     # clone_or_pull etc $m_etc master
