@@ -2,7 +2,7 @@
 # @Date    : 2022-01-04
 # @Author  : Bright (brt2@qq.com)
 # @Link    : https://gitee.com/brt2
-# @Version : v0.1.1
+# @Version : v0.1.2
 
 # submodule is link, subtree is copy
 
@@ -22,7 +22,7 @@ others=${*:4}
         cd - > /dev/null
     else
         echo "克隆仓库 ${url_repo} --> ${dir_name}"
-        git clone $url_repo $dir_name $others
+        git clone --depth=1 $url_repo $dir_name $others
         cd $dir_name
         if [ $? -eq 0 ]; then
             git checkout $branch
