@@ -2,7 +2,7 @@
 +++
 title       = "Git设置Http代理，克隆github上的代码"
 description = "1. 设置Http代理"
-date        = "2021-12-19"
+date        = "2022-01-11"
 tags        = []
 categories  = ["1-os管理","10-commands"]
 series      = []
@@ -31,3 +31,23 @@ git config --global https.proxy https://域账号:密码@proxy.huawei.com:8080
 
 git clone https://github.com/darxtrix/ptop.git
 ```
+
+## 2. 解决git pull/push每次都需要输入密码问题
+
+git bash进入你的项目目录，输入： `git config --global credential.helper store`
+
+## 3. 添加了 `--depth` 参数，如何重新拉取全部历史
+
+实际上git fetch 专门有个参数，用来将浅克隆转换为完整克隆：
+
+```sh
+git fetch --unshallow
+```
+
+## 4. 在vscode下，查看某次提交
+
+```sh
+>gitLen: search commit
+```
+
+显示后，vscode还会提示你，查看代码的对比区别。
